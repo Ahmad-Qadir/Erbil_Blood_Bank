@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class ZoomScaffold extends StatefulWidget {
-
   final Widget menuScreen;
   final Layout contentScreen;
 
@@ -14,8 +13,8 @@ class ZoomScaffold extends StatefulWidget {
   _ZoomScaffoldState createState() => new _ZoomScaffoldState();
 }
 
-class _ZoomScaffoldState extends State<ZoomScaffold> with TickerProviderStateMixin {
-
+class _ZoomScaffoldState extends State<ZoomScaffold>
+    with TickerProviderStateMixin {
   MenuController menuController;
   Curve scaleDownCurve = new Interval(0.0, 0.3, curve: Curves.easeOut);
   Curve scaleUpCurve = new Interval(0.0, 1.0, curve: Curves.easeOut);
@@ -28,8 +27,7 @@ class _ZoomScaffoldState extends State<ZoomScaffold> with TickerProviderStateMix
 
     menuController = new MenuController(
       vsync: this,
-    )
-      ..addListener(() => setState(() {}));
+    )..addListener(() => setState(() {}));
   }
 
   @override
@@ -39,46 +37,29 @@ class _ZoomScaffoldState extends State<ZoomScaffold> with TickerProviderStateMix
   }
 
   createContentDisplay() {
-    return zoomAndSlideContent(
-        new Container(
-          child: new Scaffold(
-            backgroundColor: Colors.transparent,
-            appBar: new AppBar(
-              backgroundColor: Colors.grey[200],
-              elevation: 0.0,
-              leading: new IconButton(
-                  icon: new Icon(Icons.menu, color: Colors.black,),
-                  onPressed: () {
-                    menuController.toggle();
-                  }
-              ),
-              
-            ),
-            body: widget.contentScreen.contentBuilder(context),
-            bottomNavigationBar: BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
-              currentIndex: 0,
-              items: [
-                BottomNavigationBarItem(
-                  title: Text(''),
-                  icon: Icon(Icons.home, color: Colors.grey,)
-                ),
-                BottomNavigationBarItem(
-                    title: Text(''),
-                    icon: Icon(Icons.shopping_basket, color: Colors.grey)
-                ),
-                BottomNavigationBarItem(
-                    title: Text(''),
-                    icon: Icon(Icons.shopping_cart, color: Colors.grey)
-                ),BottomNavigationBarItem(
-                    title: Text(''),
-                    icon: Icon(Icons.person, color: Colors.grey)
-                ),
-              ],
-            ),
+    return zoomAndSlideContent(new Container(
+      child: new Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: new AppBar(
+          backgroundColor: Colors.redAccent,
+          title: Text(
+            "Erbil Blood Bank",
+            style: TextStyle(color: Colors.white),
           ),
-        )
-    );
+          centerTitle: true,
+          elevation: 0,
+          leading: new IconButton(
+              icon: new Icon(
+                Icons.menu,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                menuController.toggle();
+              }),
+        ),
+        body: widget.contentScreen.contentBuilder(context),
+      ),
+    ));
   }
 
   zoomAndSlideContent(Widget content) {
@@ -107,8 +88,7 @@ class _ZoomScaffoldState extends State<ZoomScaffold> with TickerProviderStateMix
     final cornerRadius = 16.0 * menuController.percentOpen;
 
     return new Transform(
-      transform: new Matrix4
-          .translationValues(slideAmount, 0.0, 0.0)
+      transform: new Matrix4.translationValues(slideAmount, 0.0, 0.0)
         ..scale(contentScale, contentScale),
       alignment: Alignment.centerLeft,
       child: new Container(
@@ -124,8 +104,7 @@ class _ZoomScaffoldState extends State<ZoomScaffold> with TickerProviderStateMix
         ),
         child: new ClipRRect(
             borderRadius: new BorderRadius.circular(cornerRadius),
-            child: content
-        ),
+            child: content),
       ),
     );
   }
@@ -134,7 +113,11 @@ class _ZoomScaffoldState extends State<ZoomScaffold> with TickerProviderStateMix
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(child: Scaffold(body: widget.menuScreen,),),
+        Container(
+          child: Scaffold(
+            body: widget.menuScreen,
+          ),
+        ),
         createContentDisplay()
       ],
     );
@@ -142,7 +125,6 @@ class _ZoomScaffoldState extends State<ZoomScaffold> with TickerProviderStateMix
 }
 
 class ZoomScaffoldMenuController extends StatefulWidget {
-
   final ZoomScaffoldBuilder builder;
 
   ZoomScaffoldMenuController({
@@ -155,8 +137,8 @@ class ZoomScaffoldMenuController extends StatefulWidget {
   }
 }
 
-class ZoomScaffoldMenuControllerState extends State<ZoomScaffoldMenuController> {
-
+class ZoomScaffoldMenuControllerState
+    extends State<ZoomScaffoldMenuController> {
   MenuController menuController;
 
   @override
@@ -174,9 +156,9 @@ class ZoomScaffoldMenuControllerState extends State<ZoomScaffoldMenuController> 
   }
 
   getMenuController(BuildContext context) {
-    final scaffoldState = context.ancestorStateOfType(
-        new TypeMatcher<_ZoomScaffoldState>()
-    ) as _ZoomScaffoldState;
+    final scaffoldState =
+        context.ancestorStateOfType(new TypeMatcher<_ZoomScaffoldState>())
+            as _ZoomScaffoldState;
     return scaffoldState.menuController;
   }
 
@@ -188,13 +170,10 @@ class ZoomScaffoldMenuControllerState extends State<ZoomScaffoldMenuController> 
   Widget build(BuildContext context) {
     return widget.builder(context, getMenuController(context));
   }
-
 }
 
 typedef Widget ZoomScaffoldBuilder(
-    BuildContext context,
-    MenuController menuController
-    );
+    BuildContext context, MenuController menuController);
 
 class Layout {
   final WidgetBuilder contentBuilder;
