@@ -5,7 +5,7 @@ class MenuScreen extends StatelessWidget {
   final String imageUrl =
       "http://www.themoorecountynews.com/wp-content/uploads/2016/12/12-08-16-Red-Cross-Blood-Donation-LOGO.jpg";
 
-  final List<MenuItem> options = [
+  final List<MenuItem> options = [ 
     MenuItem(Icons.home, 'Home', Pages()),
     MenuItem(Icons.person_add, 'Donor Login', Pages()),
     MenuItem(Icons.local_hospital, 'Blood Request', Pages()),
@@ -25,6 +25,9 @@ class MenuScreen extends StatelessWidget {
       color: Colors.redAccent,
       child: Column(
         children: <Widget>[
+          Container(
+            height: 50,
+          ),
           Row(
             children: <Widget>[
               Padding(
@@ -37,7 +40,8 @@ class MenuScreen extends StatelessWidget {
                 'Blood Donor',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 20,
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
                 ),
               )
             ],

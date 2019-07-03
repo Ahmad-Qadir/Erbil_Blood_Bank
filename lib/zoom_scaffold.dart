@@ -41,17 +41,17 @@ class _ZoomScaffoldState extends State<ZoomScaffold>
       child: new Scaffold(
         backgroundColor: Colors.transparent,
         appBar: new AppBar(
-          backgroundColor: Colors.redAccent,
+          backgroundColor: Colors.grey[200],
           title: Text(
             "Erbil Blood Bank",
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.black),
           ),
-          centerTitle: true,
           elevation: 0,
+          centerTitle: true,
           leading: new IconButton(
               icon: new Icon(
                 Icons.menu,
-                color: Colors.white,
+                color: Colors.black,
               ),
               onPressed: () {
                 menuController.toggle();
