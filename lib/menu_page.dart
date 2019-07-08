@@ -25,9 +25,7 @@ class MenuScreen extends StatelessWidget {
       color: Colors.redAccent,
       child: Column(
         children: <Widget>[
-          Container(
-            height: 50,
-          ),
+          
           Row(
             children: <Widget>[
               Padding(
