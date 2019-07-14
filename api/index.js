@@ -1,20 +1,18 @@
 var express = require('express');
 var app = express();
 var validator = require('joi');
-var CourseClass = require('./server');
-const path = require('path');
-bodyParser = require('body-parser');
-
-app.use(bodyParser.urlencoded({ extended: false }));
+require('./serverConnection');
+var DonorClass = require('./collections/donors')
 app.use(express.json());
 
 
-app.post('/insert', (req, res) => {
+app.post('/donor/insert', (req, res) => {
     const validationSchema = {
-        name: validator.string(),
         username: validator.string().required(),
-        email: validator.string(),
-        password: validator.string()
+        password: validator.string().min(7),
+        name: validator.string().required().lowercase(),
+        phoneNumber: validator.required(),
+        location: validator.required(),
     }
     const resultOfValidator = validator.validate(req.body, validationSchema);
 
@@ -23,38 +21,47 @@ app.post('/insert', (req, res) => {
             message: resultOfValidator.error.details[0].message
         });
     } else {
-        const course = new CourseClass({
-            name: req.body.name,
+        const course = new DonorClass({
             username: req.body.username,
-            email: req.body.email,
             password: req.body.password,
+            phoneNumber: req.body.phoneNumber,
+            location: req.body.location,
+            name: req.body.name,
         });
         course.save();
-        res.redirect('/');
     }
 });
-app.get('/', async(req, res) => {
-    res.sendfile("C:/Users/Gashben/Documents/GitHub/Erbil_Blood_Bank/website/src/app/login/login.component.html");
-});
 
-app.get('/shows', async(req, res) => {
-    const result = await CourseClass.find({});
+
+app.get('/donor/shows', async (req, res) => {
+    const result = await DonorClass.find({}).sort({ name: 1 });
     res.json(result);
 });
-app.get('/search', async(req, res) => {
-    var user = req.query.username;
-    var pass = req.query.password;
-    const result = await CourseClass.find({ username: user, password: pass });
-    if (result != 0) {
-        res.sendFile("C:/Users/Gashben/Documents/GitHub/Erbil_Blood_Bank/website/src/app/home/home.component.html")
-    } else {
-        res.json("failed")
-    }
+
+app.get('/donor/search', async (req, res) => {
+    var username = req.body.username;
+    var phoneNumber = req.body.phoneNumber;
+    var location = req.body.location;
+    var name = req.body.name;
+    const result = await DonorClass.find({})
+        .or([{ location: location }, { name: name }])
+        .and([{ username: username }, { phoneNumber: phoneNumber }])
+        .sort({ name: 1 });
+    res.json(result);
 });
 
+app.delete('/donor/delete', async (req, res) => {
+    var username = req.body.username;
+    var phoneNumber = req.body.phoneNumber;
+    var email = req.body.email;
+    const result = await DonorClass.deleteOne({})
+        .or([{ username: username }, { phoneNumber: phoneNumber }, { email: email }]);
+    res.json(result);
+})
 
 
-app.put('/:id', async(req, res) => {
+
+app.put('/donor/:id', async (req, res) => {
     const validationSchema = {
         author: validator.string().required(),
     }
@@ -65,16 +72,8 @@ app.put('/:id', async(req, res) => {
             message: resultOfValidator.error.details[0].message
         });
 
-    const result = await CourseClass.findByIdAndUpdate(req.params.id, { author: req.body.author }, { new: true });
+    const result = await DonorClass.findByIdAndUpdate(req.params.id, { author: req.body.author }, { new: true });
     res.json(result);
 });
 
-app.delete('/:id', async(req, res) => {
-    const result = await CourseClass.findByIdAndDelete(req.params.id);
-    res.json(result);
-})
-
-
-
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Listening on port ${port}...`));
+app.listen(process.env.PORT || 3000);
