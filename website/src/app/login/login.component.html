@@ -1,0 +1,48 @@
+<html>
+
+<head>
+    <title>Login for EBB</title>
+</head>
+
+
+<body class="bodylogin">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4 col-sm-4 col-xs-12"></div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <!-- form-->
+
+
+                <form class="login-form-container" (submit)="onSubmit()" style="margin-top: 300px" action="http://localhost:3000/search" method="GET">
+                    <img src="assets\image\photo_2019-07-14_11-10-21.jpg" class="avatar">
+                    <h1 class="peshaky"> Admin Login </h1>
+                    <div class="form-group">
+                        <label class="label" for="exampleInputName">UserName</label>
+                        <input type="text" class="inp" placeholder="Enter Username" name="username" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="label" for="exampleInputPassword">Password</label>
+                        <input type="password" class="inp" placeholder="Enter Password" name="password" required>
+                    </div>
+                    <div class="reme">
+                        <label>
+                                <input type="checkbox">Remember me
+                            </label>
+
+                    </div>
+                    <button type="submit" class=" btnne btn btn-success btn-block">Login</button>
+                    <span class="text-danger">password or email incorrect</span>
+                </form>
+
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12"></div>
+
+
+
+        </div>
+    </div>
+
+</body>
+
+</html>
