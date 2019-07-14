@@ -3,8 +3,8 @@ var app = express();
 var validator = require('joi');
 var CourseClass = require('./server');
 const path = require('path');
-
 bodyParser = require('body-parser');
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
 
@@ -33,9 +33,8 @@ app.post('/insert', (req, res) => {
         res.redirect('/');
     }
 });
-
 app.get('/', async (req, res) => {
-    res.sendfile(path.join(__dirname, 'website/index.html'));
+    res.sendfile("C:/Users/GAhme/Documents/GitHub/Erbil_Blood_Bank/website/index.html");
 });
 
 app.get('/shows', async (req, res) => {
@@ -43,10 +42,12 @@ app.get('/shows', async (req, res) => {
     res.json(result);
 });
 
-app.get('/:id', async (req, res) => {
-    const result = await CourseClass.findById(req.params.id);
+app.get('/search', async (req, res) => {
+    const result = await CourseClass.findById(req.query.id);
     res.json(result);
 });
+
+
 
 app.put('/:id', async (req, res) => {
     const validationSchema = {

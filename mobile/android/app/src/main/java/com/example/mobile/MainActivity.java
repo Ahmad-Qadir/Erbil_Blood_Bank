@@ -1,4 +1,4 @@
-package com.example.test_world;
+package com.example.mobile;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

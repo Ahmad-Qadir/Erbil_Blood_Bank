@@ -1,6 +1,6 @@
 // This is a generated file; do not edit or check into version control.
 FLUTTER_ROOT=C:\flutter
-FLUTTER_APPLICATION_PATH=C:\Users\GAhme\Documents\GitHub\Erbil_Blood_Bank\erbil_blood_bank
+FLUTTER_APPLICATION_PATH=C:\Users\GAhme\Documents\GitHub\Erbil_Blood_Bank\mobile
 FLUTTER_TARGET=lib/main.dart
 FLUTTER_BUILD_DIR=build
 SYMROOT=${SOURCE_ROOT}/../build\ios

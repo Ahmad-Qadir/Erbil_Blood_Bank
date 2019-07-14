@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/erbil_blood_bank.iml" filepath="$PROJECT_DIR$/erbil_blood_bank.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android/erbil_blood_bank_android.iml" filepath="$PROJECT_DIR$/android/erbil_blood_bank_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mobile.iml" filepath="$PROJECT_DIR$/mobile.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/mobile_android.iml" filepath="$PROJECT_DIR$/android/mobile_android.iml" />
     </modules>
   </component>
 </project>

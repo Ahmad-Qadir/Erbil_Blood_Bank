@@ -1,40 +1,74 @@
-import 'menu_page.dart';
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'zoom_scaffold.dart';
+import 'package:http/http.dart' as http;
 
-void main() => runApp(MyApp());
+Future<Post> fetchPost() async {
+  final response =
+      await http.get('https://jsonplaceholder.typicode.com/posts/7');
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'Zoom Menu',
-      theme: new ThemeData(
-        primaryColor: Colors.redAccent,
-      ),
-      home: new MyHomePage(),
-      debugShowCheckedModeBanner: false,
+  if (response.statusCode == 200) {
+    // If the call to the server was successful, parse the JSON.
+    return Post.fromJson(json.decode(response.body));
+  } else {
+    // If that call was not successful, throw an error.
+    throw Exception('Failed to load post');
+  }
+}
+
+class Post {
+  final int userId;
+  final int id;
+  final String title;
+  final String body;
+
+  Post({this.userId, this.id, this.title, this.body});
+
+  factory Post.fromJson(Map<String, dynamic> json) {
+    return Post(
+      userId: json['userId'],
+      id: json['id'],
+      title: json['title'],
+      body: json['body'],
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => new _MyHomePageState();
-}
+void main() => runApp(MyApp(post: fetchPost()));
 
-class _MyHomePageState extends State<MyHomePage> {
+class MyApp extends StatelessWidget {
+  final Future<Post> post;
+  var data="sdsd";
+  MyApp({Key key, this.post}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return ZoomScaffold(
-      menuScreen: MenuScreen(),
-      contentScreen: Layout(
-          contentBuilder: (cc) => Container(
-                color: Colors.grey[200],
-                child: Container(
-                  color: Colors.grey[200],
-                ),
-              )),
+    return MaterialApp(
+      title: 'Fetch Data Example',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(data),
+        ),
+        body: Center(
+          child: FutureBuilder<Post>(
+            future: post,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                data=snapshot.data.title;
+                return Text(snapshot.data.body);
+              } else if (snapshot.hasError) {
+                return Text("${snapshot.error}");
+              }
+              // By default, show a loading spinner.
+              return CircularProgressIndicator();
+            },
+          ),
+        ),
+      ),
     );
   }
 }
