@@ -1,0 +1,257 @@
+/* You can add global styles to this file, and also import other style files */
+/* The side navigation menu */
+.sidebar {
+    margin-left: 1150px;
+    padding: 0;
+    width: 200px;
+    background-color: #f1f1f1;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+    text-align: center;
+    direction: rtl;
+  }
+
+  /* Sidebar links */
+  .sidebar a {
+    display: block;
+    color: black;
+    padding: 16px;
+    text-decoration: none;
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+  }
+ 
+  /* Links on mouse-over */
+  .sidebar a:hover:not(.active) {
+    background-color:#dc3545;
+    color: white;
+    text-decoration: none;
+  }
+
+ #icon-blood{
+     padding-left: 25px;
+  }
+  
+  /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
+  div.content {
+    margin-right: 184px;
+    padding-right: 15px;
+    height: 1000px;
+  }
+  
+  /* On screens that are less than 700px wide, make the sidebar into a topbar */
+  @media screen and (max-width: 700px) {
+    .sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
+    }
+    .sidebar a {float: left;}
+    div.content {margin-left: 0;}
+  }
+  
+  /* On screens that are less than 400px, display the bar vertically, instead of horizontally */
+  @media screen and (max-width: 400px) {
+    .sidebar a {
+      text-align: center;
+      float: none;
+    }
+  }
+
+  /* login body */
+.bodylogin{
+  margin: 0;
+  padding: 0;
+  background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background-size: cover;
+  background-position: center;
+  font-family: sans-serif;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: 100%;
+  width: 100vh;
+}
+
+/*form-containe*/
+.login-form-container{
+  width: 520px;
+  height: 520px;
+  top: 20%;
+  left: 200%;
+  position: absolute;
+  transform: translate(-50%,-50%);
+  box-sizing: border-box;
+  padding: 50px 60px;
+  border-bottom: 1px solid #ddd;
+  margin-top: 30vh;
+  background-image: linear-gradient(to top, #09203f 0%, #537895 100%);
+  border-radius: 20px;
+}
+
+/*rsmy avatar*/
+.avatar{
+  width: 170px;
+  height: 120px;
+  border-radius: 50%;
+  position: absolute;
+  top: 40px;
+  left: calc(50% - 110px);
+}
+
+/* h1 box*/
+.peshaky{
+  margin-top: 100px;
+  text-align: center;
+  font-weight: bold;
+  word-break: break-all;
+  white-space: nowrap;
+  color: #fff;  
+}
+
+/*login inputkan name , pass*/
+.form-group .inp{ 
+  border-radius: 10px;
+  padding: 15px 25px;
+  background:150;
+  color: #c3cfe2;
+  border: none;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.label{
+  color: #fff;
+}
+
+
+/*box submit*/
+.btnne[type="submit"]
+{
+border: none;
+outline: none;
+height: 40px;
+background-image: linear-gradient(to top, #48c6ef 0%, #6f86d6 100%);
+color: black;
+font-size: 19px;
+border-radius: 20px;
+padding: 10px 40px;
+margin-top: 30px;
+
+
+}
+
+/*submit hover*/
+.btnne[type="submit"]:hover
+{
+ cursor: pointer;
+  background:#D0D3D4 ;
+
+}
+
+/*reme= remember me*/
+.reme{
+  margin-top: 5px;
+  margin-bottom: 5px;
+  color: #fff;
+
+}
+/*end of login*/
+  /*this is about doner content*/
+  .Doner-form{
+    margin: 5% 20% 10% 20%;
+    text-align: center;
+    border:  3px solid;
+    box-shadow: 5px 10px 10px rgb(146, 145, 145);
+  }
+
+  .user_name{
+      text-align: left;
+  }
+
+  .doner-container{
+    display: flex;
+    margin-left: 25%;
+  }
+
+  .doner-container input {
+   text-align: right;
+   padding-right: 20%;
+    display: block;
+    margin: 2%;
+  }
+
+  .doner-container select{
+     margin-left:2%;
+     width: 295px;
+     padding-top: 1%;
+  }
+
+  .doner-container label , .doner label{
+    text-align: right;
+    margin: auto;
+    font-weight: bolder;
+  }
+
+  .form-container{
+    background-color: #f8f8f8;
+  }
+  
+.doner{
+  display: flex;
+}
+
+.doner input{
+  margin-left: 4%;
+}
+
+.doner-button{
+  margin: 3% 0;
+}
+
+
+/* this is abou list componenet*/
+.list{
+    margin-top: 15%;
+    margin-left: 10%;
+}
+
+
+/*list for doner and pation*/
+.list-h1{
+color: #dc3545;
+margin-left: 45%;
+margin-top: 2%;
+}
+
+.Doner-table{
+    text-align: right;
+  }
+  
+  .Search-btn{
+    display: flex;
+    margin-left: 50%;
+    padding: 10px;
+  }
+ 
+.search-div{
+margin:auto;
+margin-top: 5%;
+}
+
+.delet{
+  color: white;
+  padding: 8%;
+  background-color:#dc3545;
+  border: 1px solid;
+  border-radius: 50px;
+}
+  
+.edit{
+ color: whitesmoke;
+ padding: 8%;
+ margin-left: 4%;
+ background-color:green;
+ border: 1px solid;
+ border-radius: 50px;
+}

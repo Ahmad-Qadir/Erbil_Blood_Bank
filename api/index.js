@@ -11,9 +11,9 @@ app.use(express.json());
 
 app.post('/insert', (req, res) => {
     const validationSchema = {
-        name: validator.string().required(),
+        name: validator.string(),
         username: validator.string().required(),
-        email: validator.string().required(),
+        email: validator.string(),
         password: validator.string()
     }
     const resultOfValidator = validator.validate(req.body, validationSchema);
@@ -33,23 +33,28 @@ app.post('/insert', (req, res) => {
         res.redirect('/');
     }
 });
-app.get('/', async (req, res) => {
-    res.sendfile("C:/Users/GAhme/Documents/GitHub/Erbil_Blood_Bank/website/index.html");
+app.get('/', async(req, res) => {
+    res.sendfile("C:/Users/Gashben/Documents/GitHub/Erbil_Blood_Bank/website/src/app/login/login.component.html");
 });
 
-app.get('/shows', async (req, res) => {
+app.get('/shows', async(req, res) => {
     const result = await CourseClass.find({});
     res.json(result);
 });
-
-app.get('/search', async (req, res) => {
-    const result = await CourseClass.findById(req.query.id);
-    res.json(result);
+app.get('/search', async(req, res) => {
+    var user = req.query.username;
+    var pass = req.query.password;
+    const result = await CourseClass.find({ username: user, password: pass });
+    if (result != 0) {
+        res.sendFile("C:/Users/Gashben/Documents/GitHub/Erbil_Blood_Bank/website/src/app/home/home.component.html")
+    } else {
+        res.json("failed")
+    }
 });
 
 
 
-app.put('/:id', async (req, res) => {
+app.put('/:id', async(req, res) => {
     const validationSchema = {
         author: validator.string().required(),
     }
@@ -64,10 +69,12 @@ app.put('/:id', async (req, res) => {
     res.json(result);
 });
 
-app.delete('/:id', async (req, res) => {
+app.delete('/:id', async(req, res) => {
     const result = await CourseClass.findByIdAndDelete(req.params.id);
     res.json(result);
 })
+
+
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
