@@ -6,9 +6,13 @@ const donorSchema = new mongoose.Schema({
     name: String,
     email: String,
     phoneNumber: String,
-    location: String,
-    startDate: { type: Date, default: Date.now },
+    location: { type: String, enum: ["Erbil", "Duhok", "Sulemani", "Kerkuk", "Soran", "Koya", "Halabja"] },
     points: Number,
+    birthdate: Date,
+    IDNumber: String,
+    gender: { type: String, enum: ["Male", "Female"] },
+    latestDateofDonation: Date,
+    bloodType: { type: String, enum: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"] },
     testResult: Boolean,
     testDate: { type: Date, default: Date.now }
 });
