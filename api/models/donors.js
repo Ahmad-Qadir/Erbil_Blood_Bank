@@ -13,8 +13,8 @@ const donorSchema = new mongoose.Schema({
     gender: { type: String, enum: ["Male", "Female"] },
     latestDateofDonation: Date,
     bloodType: { type: String, enum: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"] },
-    testResult: Boolean,
-    testDate: { type: Date, default: Date.now }
+    testDate: { type: Date, default: Date.now },
+    employer: { type: String, enum: ["Ahmed", "Hevi", "Gashbeen", "Shayma", "Noor", "Helen", "Gulala", "Sumayya"] }
 });
 
 
