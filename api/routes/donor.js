@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var validator = require('joi');
 require('../connections/serverConnection');
-var DonorClass = require('../models/donors')
+var DonorClass = require('../models/donor')
 app.use(express.json());
 
 
@@ -59,7 +59,7 @@ app.get('/donor/shows/:id', async (req, res) => {
     res.json(result);
 });
 
-//show all donors   //admin and donor can use
+//show all donors   //admin and donors can use
 app.delete('/donor/delete/:id', async (req, res) => {
     const result = await DonorClass.deleteOne({ _id: req.params.id });
     res.json(result);
@@ -77,7 +77,7 @@ app.get('/donor/search', async (req, res) => {
     res.json(result);
 });
 
-//update password of donor //donor can use
+//update password of donor //donors can use
 app.put('/donor/reset/:id', async (req, res) => {
     var newPassword = req.body.newPassword;
     var confirmNewPassword = req.body.confirmNewPassword;
@@ -101,7 +101,7 @@ app.put('/donor/reset/:id', async (req, res) => {
     }
 });
 
-//update profile of donor   //admin and donor can use
+//update profile of donor   //admin and donors can use
 app.put('/donor/update/:id', async (req, res) => {
     var name = req.body.name,
     var email = req.body.email,
@@ -131,5 +131,9 @@ app.put('/donor/update/:id', async (req, res) => {
         message: "Your informations Updated Succesfully"
     });
 });
+
+
+//authentication of Donor login
+//use bcryptjs to encrypt password of donors
 
 app.listen(process.env.PORT || 3000);

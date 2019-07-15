@@ -20,5 +20,4 @@ const donorSchema = new mongoose.Schema({
 
 const DonorClass = mongoose.model('donors', donorSchema);
 
-
 module.exports = DonorClass;
