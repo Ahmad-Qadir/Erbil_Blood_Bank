@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var Bcrypt = require('bcryptjs');
 var validator = require('joi');
 require('../connections/serverConnection');
 var DonorClass = require('../models/donor')
@@ -7,19 +8,17 @@ app.use(express.json());
 
 
 //insert new Donor //Admin can use
-app.post('/donor/insert', (req, res) => {
+app.post('/donor/register', async (req, res) => {
     const validationSchema = {
         username: validator.string().required().lowercase(),
         name: validator.string().required(),
         phoneNumber: validator.required(),
         location: validator.required(),
         bloodType: validator.required(),
-        birthdate: validator.required(),
         IDNumber: validator.required(),
         gender: validator.required(),
         employer: validator.required(),
-        latestDateofDonation: validator.required(),
-        testDate: validator.required()
+        password: validator.required()
     }
     const resultOfValidator = validator.validate(req.body, validationSchema);
 
@@ -28,8 +27,10 @@ app.post('/donor/insert', (req, res) => {
             message: resultOfValidator.error.details[0].message
         });
     } else {
+        req.body.password = Bcrypt.hashSync(req.body.password, Bcrypt.genSaltSync(10));
         const course = new DonorClass({
             username: req.body.username,
+            password: req.body.password,
             name: req.body.name,
             email: req.body.email,
             phoneNumber: req.body.phoneNumber,
@@ -43,7 +44,8 @@ app.post('/donor/insert', (req, res) => {
             testDate: req.body.testDate,
             employer: req.body.employer
         });
-        course.save();
+        await course.save();
+        res.json(course);
     }
 });
 
@@ -103,13 +105,13 @@ app.put('/donor/reset/:id', async (req, res) => {
 
 //update profile of donor   //admin and donors can use
 app.put('/donor/update/:id', async (req, res) => {
-    var name = req.body.name,
-    var email = req.body.email,
-    var phoneNumber = req.body.phoneNumber,
-    var location = req.body.location,
-    var birthdate = req.body.birthdate,
-    var gender = req.body.gender,
-    var bloodType = req.body.bloodType,
+    var name = req.body.name;
+    var email = req.body.email;
+    var phoneNumber = req.body.phoneNumber;
+    var location = req.body.location;
+    var birthdate = req.body.birthdate;
+    var gender = req.body.gender;
+    var bloodType = req.body.bloodType;
     const validationSchema = {
         name: validator.string().required(),
         phoneNumber: validator.required(),
@@ -126,14 +128,36 @@ app.put('/donor/update/:id', async (req, res) => {
             message: resultOfValidator.error.details[0].message
         });
 
-    const donorNewUpdate = await DonorClass.findByIdAndUpdate({ _id: req.params.id }, { name: name, email: email, phoneNumber: phoneNumber, location: location, birthdate: birthdate, gender: gender, bloodType: bloodType });
+    await DonorClass.findByIdAndUpdate({ _id: req.params.id }, {
+        $set: {
+            name: name,
+            email: email,
+            phoneNumber: phoneNumber,
+            location: location,
+            birthdate: birthdate,
+            gender: gender,
+            bloodType: bloodType
+        }
+    }, { new: true });
     res.json({
         message: "Your informations Updated Succesfully"
     });
 });
 
-
+app.post("/donor/login", async (req, res) => {
+    try {
+        var user = await DonorClass.findOne({ username: req.body.username }).exec();
+        if (!user) {
+            return res.status(400).send({ message: "The username does not exist" });
+        }
+        if (!Bcrypt.compareSync(req.body.password, user.password)) {
+            return res.status(400).send({ message: "The password is invalid" });
+        }
+        res.send({ message: "correct!" });
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
 //authentication of Donor login
-//use bcryptjs to encrypt password of donors
 
 app.listen(process.env.PORT || 3000);
