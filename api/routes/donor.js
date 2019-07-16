@@ -28,24 +28,29 @@ app.post('/donor/register', async (req, res) => {
         });
     } else {
         req.body.password = Bcrypt.hashSync(req.body.password, Bcrypt.genSaltSync(10));
-        const course = new DonorClass({
-            username: req.body.username,
-            password: req.body.password,
-            name: req.body.name,
-            email: req.body.email,
-            phoneNumber: req.body.phoneNumber,
-            location: req.body.location,
-            points: req.body.points,
-            birthdate: req.body.birthdate,
-            IDNumber: req.body.IDNumber,
-            gender: req.body.gender,
-            latestDateofDonation: req.body.latestDateofDonation,
-            bloodType: req.body.bloodType,
-            testDate: req.body.testDate,
-            employer: req.body.employer
-        });
-        await course.save();
-        res.json(course);
+        var user = await DonorClass.findOne({ username: req.body.username }).exec();
+        if (user) {
+            return res.send({ message: "The username exist" });
+        } else {
+            const course = new DonorClass({
+                username: req.body.username,
+                password: req.body.password,
+                name: req.body.name,
+                email: req.body.email,
+                phoneNumber: req.body.phoneNumber,
+                location: req.body.location,
+                points: req.body.points,
+                birthdate: req.body.birthdate,
+                IDNumber: req.body.IDNumber,
+                gender: req.body.gender,
+                latestDateofDonation: req.body.latestDateofDonation,
+                bloodType: req.body.bloodType,
+                testDate: req.body.testDate,
+                employer: req.body.employer
+            });
+            await course.save();
+            res.json(course);
+        }
     }
 });
 
@@ -93,9 +98,11 @@ app.put('/donor/reset/:id', async (req, res) => {
         return res.status(400).send({
             message: resultOfValidator.error.details[0].message
         });
+
     if (newPassword !== confirmNewPassword) {
         res.json({ message: "password is not same" })
     } else {
+        newPassword = Bcrypt.hashSync(newPassword, Bcrypt.genSaltSync(10));
         const donorNewPassword = await DonorClass.findByIdAndUpdate({ _id: req.params.id }, { password: newPassword });
         res.json({
             message: "Your Password Updated Succesfully"
@@ -144,6 +151,7 @@ app.put('/donor/update/:id', async (req, res) => {
     });
 });
 
+//donor login          //donor can use
 app.post("/donor/login", async (req, res) => {
     try {
         var user = await DonorClass.findOne({ username: req.body.username }).exec();
@@ -158,6 +166,8 @@ app.post("/donor/login", async (req, res) => {
         res.status(500).send(error);
     }
 });
-//authentication of Donor login
+
+
+//authentication 
 
 app.listen(process.env.PORT || 3000);
