@@ -1,3 +1,4 @@
+var config = require("config");
 var express = require('express');
 var app = express();
 var Bcrypt = require('bcryptjs');
@@ -5,7 +6,12 @@ var validator = require('joi');
 require('../connections/serverConnection');
 var DonorClass = require('../models/donor')
 app.use(express.json());
+var jwt = require('jsonwebtoken');
 
+if (!config.get("myprivatekey")) {
+    console.error("FATAL ERROR: myprivatekey is not defined.");
+    process.exit(1);
+}
 
 //insert new Donor //Admin can use
 app.post('/donor/register', async (req, res) => {
@@ -62,8 +68,12 @@ app.get('/donor/shows', async (req, res) => {
 
 //show all donors   //admin can use
 app.get('/donor/shows/:id', async (req, res) => {
-    const result = await DonorClass.find({ _id: req.params.id });
-    res.json(result);
+    var user = await DonorClass.findOne({ _id: req.body.id }).exec();
+    if (user) {
+        return res.send({ message: "The username exist" });
+    } else {
+        res.json(result);
+    }
 });
 
 //show all donors   //admin and donors can use
@@ -153,6 +163,7 @@ app.put('/donor/update/:id', async (req, res) => {
 
 //donor login          //donor can use
 app.post("/donor/login", async (req, res) => {
+
     try {
         var user = await DonorClass.findOne({ username: req.body.username }).exec();
         if (!user) {
@@ -161,6 +172,7 @@ app.post("/donor/login", async (req, res) => {
         if (!Bcrypt.compareSync(req.body.password, user.password)) {
             return res.status(400).send({ message: "The password is invalid" });
         }
+        const token = jwt.sign({ username: req.body.username }, config.get("jwtPrivateKey"));
         res.send({ message: "correct!" });
     } catch (error) {
         res.status(500).send(error);
@@ -171,3 +183,5 @@ app.post("/donor/login", async (req, res) => {
 //authentication 
 
 app.listen(process.env.PORT || 3000);
+
+
