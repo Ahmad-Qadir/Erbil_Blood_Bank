@@ -1,12 +1,14 @@
 var config = require("config");
 var express = require('express');
-var app = express();
 var Bcrypt = require('bcryptjs');
 var validator = require('joi');
-require('../connections/serverConnection');
 var DonorClass = require('../models/donor')
-app.use(express.json());
-var jwt = require('jsonwebtoken');
+const authentication = require("../middleware/auth");
+const adminAuth = require("../middleware/admin");
+var router = express.Router();
+require('../connections/serverConnection');
+router.use(express.json());
+
 
 if (!config.get("myprivatekey")) {
     console.error("FATAL ERROR: myprivatekey is not defined.");
@@ -14,7 +16,7 @@ if (!config.get("myprivatekey")) {
 }
 
 //insert new Donor //Admin can use
-app.post('/donor/register', async (req, res) => {
+router.post('/register', [authentication, adminAuth], async (req, res) => {
     const validationSchema = {
         username: validator.string().required().lowercase(),
         name: validator.string().required(),
@@ -24,7 +26,8 @@ app.post('/donor/register', async (req, res) => {
         IDNumber: validator.required(),
         gender: validator.required(),
         employer: validator.required(),
-        password: validator.required()
+        password: validator.required(),
+        isAdmin: validator.required(),
     }
     const resultOfValidator = validator.validate(req.body, validationSchema);
 
@@ -52,8 +55,10 @@ app.post('/donor/register', async (req, res) => {
                 latestDateofDonation: req.body.latestDateofDonation,
                 bloodType: req.body.bloodType,
                 testDate: req.body.testDate,
-                employer: req.body.employer
+                employer: req.body.employer,
+                isAdmin: req.body.isAdmin
             });
+
             await course.save();
             res.json(course);
         }
@@ -61,29 +66,35 @@ app.post('/donor/register', async (req, res) => {
 });
 
 //show all donors   //admin can use
-app.get('/donor/shows', async (req, res) => {
+router.get('/shows', [authentication, adminAuth], async (req, res) => {
+    const token = req.header("x-auth-token");
+    res.status(401);
     const result = await DonorClass.find({}).sort({ name: 1 });
     res.json(result);
 });
 
-//show all donors   //admin can use
-app.get('/donor/shows/:id', async (req, res) => {
-    var user = await DonorClass.findOne({ _id: req.body.id }).exec();
-    if (user) {
-        return res.send({ message: "The username exist" });
+//show specific donor   //admin can use
+router.get('/shows/:id', [authentication, adminAuth], async (req, res) => {
+    const token = req.header("x-auth-token");
+    res.status(401);
+    var user = await DonorClass.findOne({ _id: req.params.id }).exec();
+    if (!user) {
+        return res.send({ message: "The username doesnt exist" });
     } else {
-        res.json(result);
+        res.json(user);
     }
 });
 
-//show all donors   //admin and donors can use
-app.delete('/donor/delete/:id', async (req, res) => {
+//delete all donors   //admin can use
+router.delete('/delete/:id', [authentication, adminAuth], async (req, res) => {
+    const token = req.header("x-auth-token");
+    res.status(401);
     const result = await DonorClass.deleteOne({ _id: req.params.id });
     res.json(result);
 })
 
 //not work probably
-app.get('/donor/search', async (req, res) => {
+router.get('/search', async (req, res) => {
     var username = req.body.username;
     var phoneNumber = req.body.phoneNumber;
     var location = req.body.location;
@@ -95,7 +106,7 @@ app.get('/donor/search', async (req, res) => {
 });
 
 //update password of donor //donors can use
-app.put('/donor/reset/:id', async (req, res) => {
+router.put('/reset/:id', async (req, res) => {
     var newPassword = req.body.newPassword;
     var confirmNewPassword = req.body.confirmNewPassword;
     const validationSchema = {
@@ -121,7 +132,7 @@ app.put('/donor/reset/:id', async (req, res) => {
 });
 
 //update profile of donor   //admin and donors can use
-app.put('/donor/update/:id', async (req, res) => {
+router.put('/update/:id', async (req, res) => {
     var name = req.body.name;
     var email = req.body.email;
     var phoneNumber = req.body.phoneNumber;
@@ -162,7 +173,7 @@ app.put('/donor/update/:id', async (req, res) => {
 });
 
 //donor login          //donor can use
-app.post("/donor/login", async (req, res) => {
+router.post("/login", async (req, res) => {
 
     try {
         var user = await DonorClass.findOne({ username: req.body.username }).exec();
@@ -172,16 +183,11 @@ app.post("/donor/login", async (req, res) => {
         if (!Bcrypt.compareSync(req.body.password, user.password)) {
             return res.status(400).send({ message: "The password is invalid" });
         }
-        const token = jwt.sign({ username: req.body.username }, config.get("jwtPrivateKey"));
-        res.send({ message: "correct!" });
+        const token = user.generateAuthToken();
+        res.header("x-auth-token", token).json({ message: "Correct!" });
     } catch (error) {
         res.status(500).send(error);
     }
 });
 
-
-//authentication 
-
-app.listen(process.env.PORT || 3000);
-
-
+module.exports = router;

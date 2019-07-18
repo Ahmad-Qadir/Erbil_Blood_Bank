@@ -12,6 +12,7 @@ const donorSchema = new mongoose.Schema({
     points: Number,
     birthdate: Date,
     IDNumber: String,
+    isAdmin: Boolean,
     gender: { type: String, enum: ["Male", "Female"] },
     latestDateofDonation: Date,
     bloodType: { type: String, enum: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"] },
@@ -21,7 +22,7 @@ const donorSchema = new mongoose.Schema({
 
 //custom method to generate authToken 
 donorSchema.methods.generateAuthToken = function () {
-    const token = jwt.sign({ _id: this._id }, config.get('myprivatekey')); //get the private key from the config file -> environment variable
+    const token = jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, config.get('myprivatekey'));
     return token;
 }
 
