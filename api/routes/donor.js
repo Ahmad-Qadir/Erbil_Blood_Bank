@@ -17,17 +17,19 @@ if (!config.get("myprivatekey")) {
 
 //insert new Donor //Admin can use
 router.post('/register', [authentication, adminAuth], async (req, res) => {
+    req.header("x-auth-token");
     const validationSchema = {
         username: validator.string().required().lowercase(),
         name: validator.string().required(),
+        email: validator.string().email(),
         phoneNumber: validator.required(),
         location: validator.required(),
-        bloodType: validator.required(),
         IDNumber: validator.required(),
         gender: validator.required(),
+        bloodType: validator.required(),
         employer: validator.required(),
-        password: validator.required(),
-        isAdmin: validator.required(),
+        password:validator.required(),
+        age:validator.required()
     }
     const resultOfValidator = validator.validate(req.body, validationSchema);
 
@@ -43,22 +45,18 @@ router.post('/register', [authentication, adminAuth], async (req, res) => {
         } else {
             const course = new DonorClass({
                 username: req.body.username,
-                password: req.body.password,
+                password:req.body.password,
                 name: req.body.name,
                 email: req.body.email,
                 phoneNumber: req.body.phoneNumber,
                 location: req.body.location,
-                points: req.body.points,
-                birthdate: req.body.birthdate,
+                age: req.body.age,
                 IDNumber: req.body.IDNumber,
                 gender: req.body.gender,
                 latestDateofDonation: req.body.latestDateofDonation,
                 bloodType: req.body.bloodType,
-                testDate: req.body.testDate,
                 employer: req.body.employer,
-                isAdmin: req.body.isAdmin
             });
-
             await course.save();
             res.json(course);
         }
@@ -67,17 +65,15 @@ router.post('/register', [authentication, adminAuth], async (req, res) => {
 
 //show all donors   //admin can use
 router.get('/shows', [authentication, adminAuth], async (req, res) => {
-    const token = req.header("x-auth-token");
-    res.status(401);
-    const result = await DonorClass.find({}).sort({ name: 1 });
+    req.header("x-auth-token");
+    const result = await DonorClass.find({}).sort({ name: 1 }).select('-password');
     res.json(result);
 });
 
 //show specific donor   //admin can use
 router.get('/shows/:id', [authentication, adminAuth], async (req, res) => {
-    const token = req.header("x-auth-token");
-    res.status(401);
-    var user = await DonorClass.findOne({ _id: req.params.id }).exec();
+    req.header("x-auth-token");
+    var user = await DonorClass.findOne({ _id: req.params.id }).exec().select('-password');
     if (!user) {
         return res.send({ message: "The username doesnt exist" });
     } else {
@@ -87,8 +83,7 @@ router.get('/shows/:id', [authentication, adminAuth], async (req, res) => {
 
 //delete all donors   //admin can use
 router.delete('/delete/:id', [authentication, adminAuth], async (req, res) => {
-    const token = req.header("x-auth-token");
-    res.status(401);
+    req.header("x-auth-token");
     const result = await DonorClass.deleteOne({ _id: req.params.id });
     res.json(result);
 })
@@ -106,7 +101,8 @@ router.get('/search', async (req, res) => {
 });
 
 //update password of donor //donors can use
-router.put('/reset/:id', async (req, res) => {
+router.put('/reset/:id', authentication, async (req, res) => {
+    req.header("x-auth-token");
     var newPassword = req.body.newPassword;
     var confirmNewPassword = req.body.confirmNewPassword;
     const validationSchema = {
@@ -124,7 +120,7 @@ router.put('/reset/:id', async (req, res) => {
         res.json({ message: "password is not same" })
     } else {
         newPassword = Bcrypt.hashSync(newPassword, Bcrypt.genSaltSync(10));
-        const donorNewPassword = await DonorClass.findByIdAndUpdate({ _id: req.params.id }, { password: newPassword });
+        await DonorClass.findByIdAndUpdate({ _id: req.params.id }, { password: newPassword });
         res.json({
             message: "Your Password Updated Succesfully"
         });
@@ -132,7 +128,7 @@ router.put('/reset/:id', async (req, res) => {
 });
 
 //update profile of donor   //admin and donors can use
-router.put('/update/:id', async (req, res) => {
+router.put('/update/:id', authentication, async (req, res) => {
     var name = req.body.name;
     var email = req.body.email;
     var phoneNumber = req.body.phoneNumber;
@@ -174,7 +170,6 @@ router.put('/update/:id', async (req, res) => {
 
 //donor login          //donor can use
 router.post("/login", async (req, res) => {
-
     try {
         var user = await DonorClass.findOne({ username: req.body.username }).exec();
         if (!user) {

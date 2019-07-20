@@ -75,7 +75,6 @@ app.put('/patient/update/:id', (req, res) => {
         hospitalName: joi.string().required(),
         phonNumber: joi.string().required(),
         gender: joi.string().required(),
-
     }
     const resultvalidate = validator.validate(req.body, valedateSchema);
 

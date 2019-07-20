@@ -1,6 +1,5 @@
 module.exports = function (req, res, next) {
-    if (!req.user.isAdmin) {
-        return res.status(403).send("You Are NOT ADMIN BABA");
-    }
+    if (!req.user.isAdmin)
+        return res.status(403).send("Access Denied! No Permission to Access");
     next();
 }

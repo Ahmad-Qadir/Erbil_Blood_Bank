@@ -9,23 +9,20 @@ const donorSchema = new mongoose.Schema({
     email: String,
     phoneNumber: String,
     location: { type: String, enum: ["Erbil", "Duhok", "Sulemani", "Kerkuk", "Soran", "Koya", "Halabja"] },
-    points: Number,
-    birthdate: Date,
+    age: Number,
     IDNumber: String,
-    isAdmin: Boolean,
     gender: { type: String, enum: ["Male", "Female"] },
     latestDateofDonation: Date,
     bloodType: { type: String, enum: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"] },
     testDate: { type: Date, default: Date.now },
-    employer: { type: String, enum: ["Ahmed", "Hevi", "Gashbeen", "Shayma", "Noor", "Helen", "Gulala", "Sumayya"] }
+    employer: { type: String, enum: ["Ahmed", "Hevi", "Gashbeen", "Shayma", "Noor", "Helen", "Gulala", "Sumayya"] },
 });
 
 //custom method to generate authToken 
 donorSchema.methods.generateAuthToken = function () {
-    const token = jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, config.get('myprivatekey'));
+    const token = jwt.sign({ _id: this._id}, config.get('myprivatekey'));
     return token;
 }
-
 
 const DonorClass = mongoose.model('donors', donorSchema);
 
