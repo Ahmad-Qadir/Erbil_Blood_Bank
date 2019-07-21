@@ -16,7 +16,7 @@ if (!config.get("myprivatekey")) {
     process.exit(1);
 }
 
-app.post('/admin/register',[auth,adminAuth], async (req, res) => {
+app.post('/admin/register', [auth, adminAuth], async (req, res) => {
     req.header("x-auth-token");
     const validationSchema = {
         username: validator.string().required().lowercase(),
@@ -60,14 +60,14 @@ app.post("/admin/login", async (req, res) => {
     }
 });
 
-app.get("/admin/me",[auth,adminAuth], async (req, res) => {
+app.get("/admin/me", [auth, adminAuth], async (req, res) => {
     req.header("x-auth-token");
     const user = await AdminClass.findById({ _id: req.query.id }).select("-password");
     res.json(user);
 })
 
 
-app.put("/admin/update/:id",[auth,adminAuth], async (req, res) => {
+app.put("/admin/update/:id", [auth, adminAuth], async (req, res) => {
     req.header("x-auth-token");
     await AdminClass.findByIdAndUpdate({ _id: req.params.id }, {
         $set: {

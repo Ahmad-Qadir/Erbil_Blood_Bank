@@ -10,13 +10,14 @@ require('../connections/serverConnection');
 router.use(express.json());
 
 
+
 if (!config.get("myprivatekey")) {
     console.error("FATAL ERROR: myprivatekey is not defined.");
     process.exit(1);
 }
 
 //insert new Donor //Admin can use
-router.post('/register', [authentication, adminAuth], async (req, res) => {
+router.post('/register', async (req, res) => {
     req.header("x-auth-token");
     const validationSchema = {
         username: validator.string().required().lowercase(),
@@ -28,8 +29,8 @@ router.post('/register', [authentication, adminAuth], async (req, res) => {
         gender: validator.required(),
         bloodType: validator.required(),
         employer: validator.required(),
-        password:validator.required(),
-        age:validator.required()
+        password: validator.required(),
+        age: validator.required()
     }
     const resultOfValidator = validator.validate(req.body, validationSchema);
 
@@ -41,11 +42,11 @@ router.post('/register', [authentication, adminAuth], async (req, res) => {
         req.body.password = Bcrypt.hashSync(req.body.password, Bcrypt.genSaltSync(10));
         var user = await DonorClass.findOne({ username: req.body.username }).exec();
         if (user) {
-            return res.send({ message: "The username exist" });
+            return res.status(409).send({ message: "The username exist" });
         } else {
             const course = new DonorClass({
                 username: req.body.username,
-                password:req.body.password,
+                password: req.body.password,
                 name: req.body.name,
                 email: req.body.email,
                 phoneNumber: req.body.phoneNumber,
@@ -64,16 +65,16 @@ router.post('/register', [authentication, adminAuth], async (req, res) => {
 });
 
 //show all donors   //admin can use
-router.get('/shows', [authentication, adminAuth], async (req, res) => {
+router.get('/shows', async (req, res) => {
     req.header("x-auth-token");
     const result = await DonorClass.find({}).sort({ name: 1 }).select('-password');
     res.json(result);
 });
 
 //show specific donor   //admin can use
-router.get('/shows/:id', [authentication, adminAuth], async (req, res) => {
+router.get('/shows/:id', async (req, res) => {
     req.header("x-auth-token");
-    var user = await DonorClass.findOne({ _id: req.params.id }).exec().select('-password');
+    var user = await DonorClass.findOne({ _id: req.params.id }).select('-password');
     if (!user) {
         return res.send({ message: "The username doesnt exist" });
     } else {
@@ -171,7 +172,7 @@ router.put('/update/:id', authentication, async (req, res) => {
 //donor login          //donor can use
 router.post("/login", async (req, res) => {
     try {
-        var user = await DonorClass.findOne({ username: req.body.username }).exec();
+        var user = await DonorClass.findOne({ username: req.body.username });
         if (!user) {
             return res.status(400).send({ message: "The username does not exist" });
         }
