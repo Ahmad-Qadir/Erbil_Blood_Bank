@@ -63,7 +63,7 @@ class _getOneDonorState extends State<getOneDonor> {
 
     var data = json.encode({
       "password": "Shayma1997",
-      'username': "_displayValue",
+      'username': "halo",
       "phoneNumber": "0238402348",
       "location": "Erbil",
       "name": "jiqo fiqo miqo",
@@ -80,7 +80,7 @@ class _getOneDonorState extends State<getOneDonor> {
       body: Column(
         children: <Widget>[
           FutureBuilder(
-            future: ApiService.getSpecificDonor(widget.id),
+            future: ApiService.showsSpecificDonor(widget.id),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 return Column(
@@ -116,7 +116,7 @@ class _getOneDonorState extends State<getOneDonor> {
           RaisedButton(
             child: Text("insert data into database"),
             onPressed: () {
-              ApiService.sendRequest(data);
+              ApiService.register(data);
             },
           ),
           Text(_displayValue)
