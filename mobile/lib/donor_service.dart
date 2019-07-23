@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:io';
 
 class Urls {
-  static const BASE_API_DONOR_URL = "http://192.168.100.3:3000/donor";
+  static const BASE_API_DONOR_URL = "http://192.168.100.107:3000/donor";
 }
 
 class ApiService {
@@ -34,6 +34,16 @@ class ApiService {
     });
   }
 
+  static Future<dynamic> _delete(String url) async {
+    http.delete(url).then((response) {
+      print("Response status: ${response.statusCode}");
+      print("Response body: ${response.body}");
+      return response.statusCode;
+    }).catchError((ex) {
+      print(ex);
+    });
+  }
+
   static Future<List<dynamic>> getDonorList() async {
     return await _get('${Urls.BASE_API_DONOR_URL}/shows');
   }
@@ -42,8 +52,24 @@ class ApiService {
     return await _get('${Urls.BASE_API_DONOR_URL}/shows/$postId');
   }
 
-  static Future<dynamic> register(var data) async {
+  static Future<dynamic> register(var username,var fullname) async {
+    var data = json.encode({
+      "password": "Gashbeen1997",
+      'username': "$username",
+      "phoneNumber": "0238402348",
+      "location": "Erbil",
+      "name": "$fullname",
+      "bloodType": "O-",
+      "IDNumber": "deidjoe2",
+      "gender": "Female",
+      "employer": "Ahmed",
+      "age": "41"
+    });
     return await _post("${Urls.BASE_API_DONOR_URL}/register", data);
+  }
+
+  static Future<dynamic> deleteUser(var id) async {
+    return await _delete("${Urls.BASE_API_DONOR_URL}/delete/$id");
   }
 
   static Future<dynamic> login(var username, var password) async {

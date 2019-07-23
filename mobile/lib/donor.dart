@@ -33,6 +33,9 @@ class getDonors extends StatelessWidget {
                             builder: (context) =>
                                 getOneDonor(id: snapshot.data[index]['_id'])));
                   },
+                  onLongPress: () {
+                    ApiService.deleteUser(snapshot.data[index]['_id']);
+                  },
                 );
               },
               itemCount: snapshot.data.length,
@@ -59,20 +62,11 @@ class _getOneDonorState extends State<getOneDonor> {
   @override
   Widget build(BuildContext context) {
     final myController = TextEditingController();
-    String _displayValue = "sdfsdf";
+    final fullyname = TextEditingController();
 
-    var data = json.encode({
-      "password": "Shayma1997",
-      'username': "halo",
-      "phoneNumber": "0238402348",
-      "location": "Erbil",
-      "name": "jiqo fiqo miqo",
-      "bloodType": "O-",
-      "IDNumber": "deidjoe2",
-      "gender": "Female",
-      "employer": "Ahmed",
-      "age": "41"
-    });
+    String _displayValue = "sdfsdf";
+    var _fullname;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Specific Donor'),
@@ -113,10 +107,18 @@ class _getOneDonorState extends State<getOneDonor> {
             decoration: InputDecoration(hintText: 'New Username'),
             controller: myController,
           ),
+          TextField(
+            decoration: InputDecoration(hintText: 'New name'),
+            controller: fullyname,
+          ),
           RaisedButton(
             child: Text("insert data into database"),
             onPressed: () {
-              ApiService.register(data);
+              setState(() {
+                _displayValue = myController.text;
+                _fullname = fullyname.text;
+              });
+              ApiService.register(_displayValue, _fullname);
             },
           ),
           Text(_displayValue)
