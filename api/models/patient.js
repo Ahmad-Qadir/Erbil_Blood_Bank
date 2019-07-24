@@ -2,13 +2,13 @@ var mongoose = require('mongoose');
 
 const patientschema = new mongoose.Schema({
     fullName: String,
-    location: { type: String, enum: ["erbil", "sulemany", "dhok", "karkwk"] },
+    location: { type: String },
     hospitalName: String,
     phonNumber: String,
-    gender: { type: String, enum: ["male", "female"] },
-    bloodType: { type: String, enum: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"] },
+    gender: { type: String },
+    bloodType: { type: String, enum: [" O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"] },
 });
 
-const patienClass = mongoose.model('patien', patientschema);
+const patienClass = mongoose.model('patient', patientschema);
 
 module.exports = patienClass;

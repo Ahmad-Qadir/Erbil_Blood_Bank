@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'dart:io';
 
 class Urls {
-  static const BASE_API_DONOR_URL = "http://192.168.100.107:3000/donor";
+  static const BASE_API_DONOR_URL = "http://192.168.100.107:3000/donor";          //baxshar
+  static const BASE_API_RECIPIENT_URL = "http://192.168.100.107:3000/recipient";  //wargr
+  static const BASE_API_PATIENT_URL = "http://192.168.100.107:3000/patient";      //wargry mangana
 }
 
 class ApiService {
