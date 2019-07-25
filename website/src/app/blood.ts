@@ -7,4 +7,6 @@ export interface IBloodBank{
     bloodType:string,
     gender:string,
     employer:string,
+    _id: string
+    ,
 }

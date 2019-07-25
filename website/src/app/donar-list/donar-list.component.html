@@ -40,8 +40,8 @@
     <tbody *ngFor="let Blood of Users | BloodFilter:searchTerm">
         <tr>
             <td>
-                <button class="btn btn-success circl" (click)="editRow()"><i class="fa fa-edit"></i></button>
-                <button class="btn btn-danger circl"  (click)="deleteRow(Blood.id)"><i class="fa fa-trash-o"></i></button>
+                <button class="btn btn-success circl" ><i class="fa fa-edit"></i></button>
+                <button class="btn btn-danger circl"  (click)="deleteUsers(Blood._id)"><i class="fa fa-trash-o"></i></button>
             </td>
             <td>{{Blood.phoneNumber}}</td>
             <td>{{Blood.gender}}</td>
@@ -50,7 +50,8 @@
             <td>{{Blood.bloodType}}</td>
             <td>{{Blood.username}}</td>
             <td>{{Blood.name}}</td>
-            <td>{{Blood.IDNumber}}</td>
+            <td>{{Blood._id}}</td>
+            
         </tr>
     </tbody>
 </table>

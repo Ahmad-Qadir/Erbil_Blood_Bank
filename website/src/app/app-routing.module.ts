@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { CommonModule } from "@angular/common";
+import {  FormsModule, ReactiveFormsModule} from "@angular/forms"
 
 import { DonarComponent } from './donar/donar.component';
 import { PatientComponent } from './patient/patient.component';
@@ -61,6 +62,8 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes),
     HttpClientModule,
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [BloodBankService, ],
 

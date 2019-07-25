@@ -25,8 +25,9 @@ export class BloodBankService {
 
   }
 
-  deletePatient(_id): Observable<Ipatient[]>{
-    return this.http.get<Ipatient[]>(this._url+"/patient/delete/"+_id);
+  deleteUsers(id:string){
+    console.log(id);
+    return this.http.delete(this._url+"/donor/delete/"+id);
   
     
   }
