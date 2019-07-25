@@ -1,38 +1,37 @@
 <!-- The sidebar -->
 <div class="sidebar ">
-    <img id="icon-blood" src="https://cdn2.iconfinder.com/data/icons/medical_icon_set/128/blood_drop_no_shadow.png">
-    <a style="margin-top: 50px" routerLink="/home/dashbord"><i class="fa fa-dashboard"></i>  داشبۆرد</a>
-    <a routerLink="/home/donar"> <i class="fa fa-users"></i> خوێن بەخش </a>
-    <a routerLink="/home/patient"> <i class="fa fa-user"></i>  نەخۆش</a>
-    <a routerLink="/home/list"><i class="fa fa-list"></i>  لیست</a>
-    <a routerLink="/home/notification"><i class="fa fa-bell-slash"></i>  ئاگاداری</a>
-  </div>
+  <img id="icon-blood" src="https://cdn2.iconfinder.com/data/icons/medical_icon_set/128/blood_drop_no_shadow.png">
+  <a style="margin-top: 50px" routerLink="/home/dashbord" routerLinkActive="active-menu"><i class="fa fa-dashboard"></i> داشبۆرد</a>
+  <a routerLink="/home/donar" routerLinkActive="active-menu"> <i class="fa fa-users"></i> خوێن بەخش </a>
+  <a routerLink="/home/patient" routerLinkActive="active-menu"> <i class="fa fa-user"></i> نەخۆش</a>
+  <a routerLink="/home/list" routerLinkActive="active-menu"><i class="fa fa-list"></i> لیست</a>
+  <a routerLink="/home/notification" routerLinkActive="active-menu"><i class="fa fa-bell-slash"></i> ئاگاداری</a>
+</div>
 
-  <!-- Page content -->
-  <div class="content">
-  
-    <!--navbar by bootstrap-->
-    <div class="pos-f-t">
-      <div class="collapse" id="navbarToggleExternalContent">
-  
-      </div>
-      <nav class="navbar navbar-dark bg-danger">
-  
-  
-        <form class="form-inline">
-          <button class="form-control btn btn-outline-light " type="submit">گەڕان</button>
-          <input class="form-control" type="search" placeholder="گەڕان" aria-label="Search" style="margin-left: 10px">
-        </form>
-  
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent"
-          aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-  
-      </nav>
+<!-- Page content -->
+<div class="content">
+
+  <!--navbar by bootstrap-->
+  <div class="pos-f-t">
+    <div class="collapse" id="navbarToggleExternalContent">
+
     </div>
-  
-    <p style="text-align: right">زانیاری زیاتر</p>
-    <router-outlet></router-outlet>
+    <nav class="navbar navbar-dark bg-danger">
 
+
+      <form class="form-inline">
+        <button class="form-control btn btn-outline-light " type="submit">گەڕان</button>
+        <input class="form-control" type="search" placeholder="گەڕان" aria-label="Search" style="margin-left: 10px">
+      </form>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent"
+        aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+    </nav>
   </div>
+
+  <router-outlet></router-outlet>
+
+</div>

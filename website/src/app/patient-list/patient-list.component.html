@@ -31,46 +31,26 @@
 
       <th scope="col">كردار</th>
       <th scope="col">رەگەز</th>
-      <th scope="col">کات</th>
+      <th scope="col">`ژمارەی مۆبایل</th>
+      <th scope="col">نەخۆشخانە</th>
       <th scope="col">شوین</th>
-      <th scope="col">جۆری خوین</th>
-      <th scope="col">تەمەن</th>
       <th scope="col">ناو</th>
       <th scope="col">ایدی</th>
 
     </tr>
   </thead>
   <tbody>
-    <tr>
-
-      <td>
-        <i class="fa fa-trash fa-lg delet"></i>
-        <i class="fa fa-edit fa-lg edit"></i>
-      </td>
-      <td>مێ</td>
-      <td>٢٣/١٠/٢٠١٩</td>
-      <td>هەولێر</td>
-      <td>B+</td>
-      <td>٢٠</td>
-      <td>ژیلە سەردار</td>
-      <th scope="row">1</th>
-
-    </tr>
-    
-    <tr>
-
-      <td>
-        <i class="fa fa-trash fa-lg delet"></i>
-        <i class="fa fa-edit fa-lg edit"></i>
-      </td>
-      <td>مێ</td>
-      <td>٢٣/١٠/٢٠١٩</td>
-      <td>هەولێر</td>
-      <td>B+</td>
-      <td>٢٠</td>
-      <td>ژیلە سەردار</td>
-      <th scope="row">1</th>
-
-    </tr>
-  </tbody>
+    <tbody *ngFor="let Blood of Patient | BloodFilter:searchTerm">
+        <tr>
+            <td>
+                <button class="btn btn-success circl"><i class="fa fa-edit"></i></button>
+                <button class="btn btn-danger circl" id="remove" (click)="deleteRow(Blood.id)"><i class="fa fa-trash-o"></i></button>
+            </td>
+            <td>{{Blood.gender}}</td>
+            <td>{{Blood.phoneNumber}}</td>
+            <td>{{Blood.hospitalName}}</td>
+            <td>{{Blood.location}}</td>
+            <td>{{Blood.fullName}}</td>
+            <td>{{Blood._id}}</td>
+        </tr>
 </table>

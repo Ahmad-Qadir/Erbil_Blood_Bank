@@ -37,39 +37,20 @@
 
         </tr>
     </thead>
-    <tbody>
-        <tr>
-
-            <td>
-                <i class="fa fa-trash fa-sm delet"></i>
-                <i class="fa fa-edit fa-sm edit"></i>
-            </td>
-            <td>07504335641</td>
-            <td>مێ</td>
-            <td>٢٣/١٠/٢٠١٩</td>
-            <td>هەولێر</td>
-            <td>B+</td>
-            <td>٢٠</td>
-            <td>ژیلە سەردار</td>
-            <th scope="row">1</th>
-
-        </tr>
-
+    <tbody *ngFor="let Blood of Users | BloodFilter:searchTerm">
         <tr>
             <td>
-                <i class="fa fa-trash fa-sm delet"></i>
-                <i class="fa fa-edit fa-sm edit"></i>
+                <button class="btn btn-success circl" (click)="editRow()"><i class="fa fa-edit"></i></button>
+                <button class="btn btn-danger circl"  (click)="deleteRow(Blood.id)"><i class="fa fa-trash-o"></i></button>
             </td>
-            <td>07504335641</td>
-            <td>مێ</td>
-            <td>٢٣/١٠/٢٠١٩</td>
-            <td>هەولێر</td>
-            <td>B+</td>
-            <td>٢٠</td>
-            <td>ژیلە سەردار</td>
-            <th scope="row">1</th>
-
+            <td>{{Blood.phoneNumber}}</td>
+            <td>{{Blood.gender}}</td>
+            <td>{{Blood.employer}}</td>
+            <td>{{Blood.location}}</td>
+            <td>{{Blood.bloodType}}</td>
+            <td>{{Blood.username}}</td>
+            <td>{{Blood.name}}</td>
+            <td>{{Blood.IDNumber}}</td>
         </tr>
-
     </tbody>
 </table>

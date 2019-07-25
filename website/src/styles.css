@@ -124,7 +124,6 @@
   color: #fff;
 }
 
-
 /*box submit*/
 .btnne[type="submit"]
 {
@@ -137,8 +136,6 @@ font-size: 19px;
 border-radius: 20px;
 padding: 10px 40px;
 margin-top: 30px;
-
-
 }
 
 /*submit hover*/
@@ -146,7 +143,6 @@ margin-top: 30px;
 {
  cursor: pointer;
   background:#D0D3D4 ;
-
 }
 
 /*reme= remember me*/
@@ -154,7 +150,6 @@ margin-top: 30px;
   margin-top: 5px;
   margin-bottom: 5px;
   color: #fff;
-
 }
 /*end of login*/
   /*this is about doner content*/
@@ -209,13 +204,11 @@ margin-top: 30px;
   margin: 3% 0;
 }
 
-
 /* this is abou list componenet*/
 .list{
     margin-top: 15%;
     margin-left: 10%;
 }
-
 
 /*list for doner and pation*/
 .list-h1{
@@ -239,19 +232,28 @@ margin:auto;
 margin-top: 5%;
 }
 
-.delet{
-  color: white;
-  padding: 8%;
-  background-color:#dc3545;
-  border: 1px solid;
-  border-radius: 50px;
+button.circl{
+  width: 30px;
+  height: 30px;
+  border-radius: 20px;
+  margin-left: 0px;
+  padding: 0;
+  border: 0;
+  font-size: 15px  ;
+  margin-right: 4px;
 }
-  
-.edit{
- color: whitesmoke;
- padding: 8%;
- margin-left: 4%;
- background-color:green;
- border: 1px solid;
- border-radius: 50px;
+
+/* active butto for home componnt*/
+.active-menu{
+  background-color: #dc3545;
+  color: #fff;
+}
+
+/* about ashbord  componnt*/
+#dashbords{
+margin: auto;
+}
+
+.dashbords{
+  padding: 1% 1%;
 }
